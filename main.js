@@ -20,7 +20,7 @@ function createTodoElement(A) {
     //making the thing
     let todoElement = {
         name : A, 
-        complete : false,
+        status : false,
     };
 
     //to see if the thing works
@@ -37,49 +37,26 @@ function createTodoElement(A) {
 }
 
 function manifest() {
-    for(let i = 0; i < arr.length; i++) {
-                //bringing the thing to html
-
-
-
-const template =  `
-        <li id="${i}"><h3>${arr[i].name}</h3></li> <button id ="${1000000 + i}">Check</button> <button id ="${2000000 + i}">Remove</button> 
-    `;
-
-
-
-    todoList.innerHTML = template;
-    
-
-    }
-
+    const listAdding = arr.map((todoObject, index) => (
+            
+        `
+            <li>
+                <h3>${todoObject.name}</h3>
+                <button data-index ="${1000000 + index}">Check</button>
+                <button data-index ="${index}">Remove</button>
+            </li>   
+        `
+    )).join(" ");
+    todoList.innerHTML = listAdding;
 }
 
-function createButtons() {
+manifest();
 
-    for(let j = 0; j < arr.length; j++){
 
-        const buttonCheck = document.getElementById(1000000 + j);
-
-        buttonCheck.addEventListener("click", function() {
-            arr[j].complete = true;
-        });
+   
 
 
 
-        const buttonDelete = document.getElementById(2000000 + j);
-      
-        buttonDelete.addEventListener("click", function() {
-            arr.splice(j, 1);
-            console.log(arr);
-            manifest();
-        })
-
-    }
-}
-
-
-    
 
 //THIS SUPPOSEDLY BRINGS EVERYTHING TO THE PAGE
 
@@ -88,9 +65,10 @@ formTodo.addEventListener("submit", function(event) {
     event.preventDefault();
     createTodoElement(todoInput.value);
     manifest();
-    window.onload = function() {
-        createButtons();
-    }
+
+
+    
+
 
     console.log(arr);
 })
@@ -99,3 +77,22 @@ formTodo.addEventListener("submit", function(event) {
 
 
 
+
+    todoList.addEventListener("click", function(event) {
+        if(event.target.matches("button")) {
+            const index = event.target.dataset.index;
+            arr.splice(index, 1);
+            manifest();
+            console.log(arr);
+        }
+        if(event.target.matches("button")) {
+           const index = event.target.dataset.index;
+           const harnovog = index - 1000000;
+           arr[harnovog["status"]] = !arr[harnovog["status"]]; 
+//i tried getting the status key from the objects in every way that i could think of... 
+//i tried for more than 5 hours and no matter what, the "status" would keep being UNDEFINED...
+//i'm just very frustrated, but i think i'll give up on making it work...
+           manifest();
+           console.log(arr);
+        }
+    })
